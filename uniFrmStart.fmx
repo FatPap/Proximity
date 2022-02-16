@@ -2,8 +2,8 @@ object frmStart: TfrmStart
   Left = 0
   Top = 0
   Caption = 'Proximity'
-  ClientHeight = 872
-  ClientWidth = 721
+  ClientHeight = 982
+  ClientWidth = 1129
   FormFactor.Width = 320
   FormFactor.Height = 480
   FormFactor.Devices = [Desktop, iPhone, iPad]
@@ -22,7 +22,7 @@ object frmStart: TfrmStart
     Padding.Top = 2.000000000000000000
     Padding.Right = 2.000000000000000000
     Padding.Bottom = 2.000000000000000000
-    Width = 721.000000000000000000
+    Width = 1129.000000000000000000
     TabOrder = 1
     object btnNewGame: TButton
       Align = Left
@@ -37,54 +37,116 @@ object frmStart: TfrmStart
   end
   object panGame: TPanel
     Align = Client
-    Height = 832.000000000000000000
-    Width = 721.000000000000000000
+    Height = 942.000000000000000000
+    Width = 1129.000000000000000000
     TabOrder = 2
     object Path1: TPath
       Data.Path = {
         070000000000000000002040C3F5283F010000000000F040C3F5283F01000000
         000020410000A040010000000000F040AE4715410100000000002040AE471541
         01000000000000000000A0400300000000002040C3F5283F}
-      Height = 100.000000000000000000
-      Position.X = 75.000000000000000000
-      Position.Y = 50.000000000000000000
-      Width = 100.000000000000000000
+      Fill.Kind = Gradient
+      Fill.Gradient.Points = <
+        item
+          Color = xFFBC0000
+          Offset = 0.801242232322692900
+        end
+        item
+          Color = xFFFBD7D7
+          Offset = 0.953416168689727700
+        end>
+      Fill.Gradient.StartPosition.Y = 0.733153820037841800
+      Fill.Gradient.StopPosition.X = 1.000000000000000000
+      Fill.Gradient.StopPosition.Y = 0.266846150159835800
+      Height = 200.000000000000000000
+      Position.X = 149.000000000000000000
+      Position.Y = 100.000000000000000000
+      Stroke.Thickness = 2.000000000000000000
+      Width = 200.000000000000000000
     end
     object Path2: TPath
       Data.Path = {
         070000000000000000002040C3F5283F010000000000F040C3F5283F01000000
         000020410000A040010000000000F040AE4715410100000000002040AE471541
         01000000000000000000A0400300000000002040C3F5283F}
-      Height = 100.000000000000000000
-      Width = 100.000000000000000000
+      Fill.Kind = Gradient
+      Fill.Gradient.Points = <
+        item
+          Color = xFF37615C
+          Offset = 0.000000000000000000
+        end
+        item
+          Color = xFF508E86
+          Offset = 1.000000000000000000
+        end>
+      Fill.Gradient.Style = Radial
+      Height = 200.000000000000000000
+      Stroke.Thickness = 2.000000000000000000
+      Width = 200.000000000000000000
     end
     object Path3: TPath
       Data.Path = {
         070000000000000000002040C3F5283F010000000000F040C3F5283F01000000
         000020410000A040010000000000F040AE4715410100000000002040AE471541
         01000000000000000000A0400300000000002040C3F5283F}
-      Height = 100.000000000000000000
-      Position.Y = 100.000000000000000000
-      Width = 100.000000000000000000
+      Fill.Kind = Gradient
+      Fill.Gradient.Points = <
+        item
+          Color = xFF37615C
+          Offset = 0.000000000000000000
+        end
+        item
+          Color = xFF508E86
+          Offset = 1.000000000000000000
+        end>
+      Fill.Gradient.Style = Radial
+      Height = 200.000000000000000000
+      Position.Y = 199.000000000000000000
+      Stroke.Thickness = 2.000000000000000000
+      Width = 200.000000000000000000
     end
     object Path4: TPath
       Data.Path = {
         070000000000000000002040C3F5283F010000000000F040C3F5283F01000000
         000020410000A040010000000000F040AE4715410100000000002040AE471541
         01000000000000000000A0400300000000002040C3F5283F}
-      Height = 100.000000000000000000
-      Position.X = 150.000000000000000000
-      Width = 100.000000000000000000
+      Fill.Kind = Gradient
+      Fill.Gradient.Points = <
+        item
+          Color = xFF37615C
+          Offset = 0.000000000000000000
+        end
+        item
+          Color = xFF508E86
+          Offset = 1.000000000000000000
+        end>
+      Fill.Gradient.Style = Radial
+      Height = 200.000000000000000000
+      Position.X = 298.000000000000000000
+      Stroke.Thickness = 2.000000000000000000
+      Width = 200.000000000000000000
     end
     object Path5: TPath
       Data.Path = {
         070000000000000000002040C3F5283F010000000000F040C3F5283F01000000
         000020410000A040010000000000F040AE4715410100000000002040AE471541
         01000000000000000000A0400300000000002040C3F5283F}
-      Height = 100.000000000000000000
-      Position.X = 150.000000000000000000
-      Position.Y = 100.000000000000000000
-      Width = 100.000000000000000000
+      Fill.Kind = Gradient
+      Fill.Gradient.Points = <
+        item
+          Color = xFF37615C
+          Offset = 0.000000000000000000
+        end
+        item
+          Color = xFF508E86
+          Offset = 1.000000000000000000
+        end>
+      Fill.Gradient.Style = Radial
+      Height = 200.000000000000000000
+      Position.X = 298.000000000000000000
+      Position.Y = 199.000000000000000000
+      Stroke.Thickness = 2.000000000000000000
+      Width = 200.000000000000000000
     end
   end
 end
