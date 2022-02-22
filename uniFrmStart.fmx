@@ -3,7 +3,7 @@ object frmStart: TfrmStart
   Top = 0
   Caption = 'Proximity'
   ClientHeight = 1040
-  ClientWidth = 1126
+  ClientWidth = 1070
   FormFactor.Width = 320
   FormFactor.Height = 480
   FormFactor.Devices = [Desktop, iPhone, iPad]
@@ -15,62 +15,131 @@ object frmStart: TfrmStart
   DesignerDeviceName = ''
   DesignerOrientation = 0
   DesignerOSVersion = ''
-  object panTop: TPanel
+  object rectTop: TRectangle
     Align = MostTop
-    Height = 40.000000000000000000
-    Padding.Left = 2.000000000000000000
-    Padding.Top = 2.000000000000000000
-    Padding.Right = 2.000000000000000000
-    Padding.Bottom = 2.000000000000000000
-    Width = 1126.000000000000000000
-    TabOrder = 1
+    Fill.Color = xFFCCCC99
+    Height = 57.000000000000000000
+    Stroke.Kind = None
+    Width = 1070.000000000000000000
+    object Text1: TText
+      Align = Contents
+      Height = 49.000000000000000000
+      HitTest = False
+      Margins.Bottom = 8.000000000000000000
+      Text = 'PROXIMITY'
+      TextSettings.Font.Size = 52.000000000000000000
+      TextSettings.Font.Style = [fsBold]
+      TextSettings.FontColor = claRed
+      Width = 1070.000000000000000000
+      object ShadowEffect1: TShadowEffect
+        Distance = 2.000000000000000000
+        Direction = 45.000000000000000000
+        Softness = 0.500000000000000000
+        Opacity = 0.600000023841857900
+        ShadowColor = xFF5E5E5E
+      end
+    end
     object btnNewGame: TButton
       Align = Left
-      Height = 36.000000000000000000
-      Position.X = 2.000000000000000000
-      Position.Y = 2.000000000000000000
+      StyledSettings = [Family, FontColor]
+      Height = 37.000000000000000000
+      Margins.Left = 10.000000000000000000
+      Margins.Top = 10.000000000000000000
+      Margins.Bottom = 10.000000000000000000
+      Position.X = 10.000000000000000000
+      Position.Y = 10.000000000000000000
       TabOrder = 1
       Text = 'NEW GAME'
-      Width = 80.000000000000000000
+      TextSettings.Font.Size = 14.000000000000000000
+      TextSettings.Font.Style = [fsBold]
+      Width = 90.000000000000000000
       OnClick = btnNewGameClick
     end
-    object NumberBox1: TNumberBox
+    object nmbxX: TNumberBox
       Touch.InteractiveGestures = [LongTap, DoubleTap]
       Align = Left
       TabOrder = 4
       Cursor = crIBeam
       Min = 1.000000000000000000
-      Max = 20.000000000000000000
-      Value = 1.000000000000000000
-      Position.X = 84.000000000000000000
-      Position.Y = 2.000000000000000000
-      Width = 100.000000000000000000
-      Height = 36.000000000000000000
+      Max = 30.000000000000000000
+      Value = 2.000000000000000000
+      TextSettings.Font.Size = 14.000000000000000000
+      TextSettings.Font.Style = [fsBold]
+      TextSettings.HorzAlign = Center
+      Position.X = 110.000000000000000000
+      Position.Y = 10.000000000000000000
+      Width = 62.000000000000000000
+      Height = 37.000000000000000000
       VertIncrement = 5.000000000000000000
-      Margins.Left = 2.000000000000000000
-      OnChangeTracking = NumberBox1ChangeTracking
+      Margins.Left = 10.000000000000000000
+      Margins.Top = 10.000000000000000000
+      Margins.Bottom = 10.000000000000000000
+      StyledSettings = [Family, FontColor]
+      OnChangeTracking = nmbxXYChangeTrackings
     end
-    object NumberBoxDebug: TNumberBox
+    object nmbxY: TNumberBox
       Touch.InteractiveGestures = [LongTap, DoubleTap]
       Align = Left
       TabOrder = 3
       Cursor = crIBeam
-      Min = 1.000000000000000000
-      Max = 600.000000000000000000
-      Value = 500.000000000000000000
-      Position.X = 186.000000000000000000
-      Position.Y = 2.000000000000000000
-      Width = 100.000000000000000000
-      Height = 36.000000000000000000
+      Min = 2.000000000000000000
+      Max = 30.000000000000000000
+      Value = 5.000000000000000000
+      TextSettings.Font.Size = 14.000000000000000000
+      TextSettings.Font.Style = [fsBold]
+      TextSettings.HorzAlign = Center
+      Position.X = 182.000000000000000000
+      Position.Y = 10.000000000000000000
+      Width = 62.000000000000000000
+      Height = 37.000000000000000000
       VertIncrement = 5.000000000000000000
-      Margins.Left = 2.000000000000000000
-      OnChangeTracking = NumberBoxDebugChangeTracking
+      Margins.Left = 10.000000000000000000
+      Margins.Top = 10.000000000000000000
+      Margins.Bottom = 10.000000000000000000
+      StyledSettings = [Family, FontColor]
+      OnChangeTracking = nmbxXYChangeTrackings
+    end
+  end
+  object rectBottom: TRectangle
+    Align = Bottom
+    Fill.Kind = Gradient
+    Fill.Gradient.Points = <
+      item
+        Color = xFFBEBE7E
+        Offset = 0.000000000000000000
+      end
+      item
+        Color = xFFCCCC99
+        Offset = 1.000000000000000000
+      end>
+    Fill.Gradient.StartPosition.X = 0.500000000000000000
+    Fill.Gradient.StartPosition.Y = 1.000000000000000000
+    Fill.Gradient.StopPosition.X = 0.499999970197677600
+    Fill.Gradient.StopPosition.Y = 0.000000000000000000
+    Height = 120.000000000000000000
+    Position.Y = 920.000000000000000000
+    Stroke.Kind = None
+    Width = 1070.000000000000000000
+  end
+  object rectGame: TRectangle
+    Align = Client
+    Fill.Color = xFFCCCC99
+    Height = 863.000000000000000000
+    Stroke.Kind = None
+    Width = 1070.000000000000000000
+    object slGame: TScaledLayout
+      Align = Fit
+      Height = 863.000000000000000000
+      OriginalWidth = 862.999938964843800000
+      OriginalHeight = 863.000000000000000000
+      Width = 862.999938964843800000
     end
   end
   object designerLayout: TPanel
-    Align = Client
-    Height = 1000.000000000000000000
-    Width = 1126.000000000000000000
+    Height = 433.000000000000000000
+    Position.X = 248.000000000000000000
+    Position.Y = 288.000000000000000000
+    Width = 537.000000000000000000
     TabOrder = 2
     object Path1: TPath
       Data.Path = {
@@ -179,19 +248,6 @@ object frmStart: TfrmStart
       Position.Y = 199.000000000000000000
       Stroke.Thickness = 2.000000000000000000
       Width = 200.000000000000000000
-    end
-  end
-  object panClient: TPanel
-    Align = Client
-    Height = 1000.000000000000000000
-    Width = 1126.000000000000000000
-    TabOrder = 4
-    object slGame: TScaledLayout
-      Align = Fit
-      Height = 1000.000000000000000000
-      OriginalWidth = 1000.000000000000000000
-      OriginalHeight = 1000.000000000000000000
-      Width = 1000.000000000000000000
     end
   end
 end
