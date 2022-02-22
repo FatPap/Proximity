@@ -7,7 +7,7 @@ uses
   FMX.Objects,
   FMX.Types,
 //  FMX.Graphics,
-//  FMX.Controls,
+  FMX.Controls,
   FMX.StdCtrls;
 
 
@@ -21,7 +21,7 @@ type
     fHexFields: THexFields;
     procedure HexFieldClick(Sender: TObject);
   public
-    constructor Create(AOwner: TComponent); override;
+    constructor Create(AOwner: TComponent; aParent: TControl; aX, aY, aDebug: Integer); reintroduce;
     destructor Destroy; override;
 
   end;
@@ -34,8 +34,11 @@ type
   THexField = class(TCustomPath)
   private
     fTxt: TText;
+    fDebug: TRectangle;
     fHexFieldStatus: THexFieldStatus;
     procedure SetHexFieldStatus(const Value: THexFieldStatus);
+  protected
+    procedure Resize; override;
   public
     constructor Create(AOwner: TComponent); override;
     property HexFieldStatus: THexFieldStatus read fHexFieldStatus write SetHexFieldStatus;
@@ -46,23 +49,42 @@ implementation
 
 uses
   System.UIConsts,
+  System.Math,
   FMX.Graphics;
 
 { TProximity }
 
-constructor TProximity.Create(AOwner: TComponent);
+constructor TProximity.Create(AOwner: TComponent; aParent: TControl; aX, aY, aDebug: Integer);
 var
   x, y: Integer;
   px, py: Single;
+  _SizeFull, _SizeHalf, _Size34, _Frei: Single;
 const
- coStrokeThickness = 1;
- coSizeFull = 120;
- coSizeHalf = coSizeFull div 2;
- coSize34 = coSizeFull div 4 * 3;
+ coStrokeThickness = 0;
 begin
-  inherited;
+  inherited create(AOwner);
   Align := TAlignLayout.Client;
-  SetLength(fHexFields, 5, 10);
+  Parent := aParent;
+
+  aX := EnsureRange(aX, 1, 20);
+  aY := EnsureRange(aY, 1, 20);
+
+  SetLength(fHexFields, aX, aY);
+
+  _SizeFull := aParent.Width / (aX*2);
+  _Frei := aParent.Width -
+           ((aX*2)*(_SizeFull)) +
+           ((aX*2-1)*(_SizeFull*0.25));
+  //_SizeFull := _SizeFull + 2*coStrokeThickness + _Frei / (aX*2);
+
+  _SizeFull := _SizeFull + _SizeFull / 4;
+
+  _SizeFull := aDebug;
+
+  _SizeHalf := _SizeFull / 2;
+  _Size34   := _SizeFull / 4 * 3;
+
+  //In the flat orientation, a hexagon has width w = 2 * size and height h = sqrt(3) * size. The sqrt(3) comes from sin(60°).
 
   for x := Low(fHexFields) to High(fHexFields) do
   begin
@@ -70,19 +92,19 @@ begin
     begin
       if y mod 2 = 0 then
       begin
-        px := x * (coSizeFull + coSizeHalf) - (2 * x * coStrokeThickness);
-        py := y * (coSizeHalf - coStrokeThickness);
+        px := x * (_SizeFull + _SizeHalf) - (2 * x * coStrokeThickness);
+        py := y * (_SizeHalf - coStrokeThickness);
       end else
       begin
       //px := x * (coSizeFull + coSizeHalf - coStrokeThickness) + (coSize34 - coStrokeThickness);
-        px := x * (coSizeFull + coSizeHalf) + (coSize34 - coStrokeThickness) - (2 * x * coStrokeThickness);
-        py := y * (coSizeHalf - coStrokeThickness);
+        px := x * (_SizeFull + _SizeHalf) + (_Size34 - coStrokeThickness) - (2 * x * coStrokeThickness);
+        py := y * (_SizeHalf - coStrokeThickness);
       end;
 
       fHexFields[x, y] := THexField.Create(Self);
       fHexFields[x, y].fTxt.Text := x.ToString + ',' + y.ToString;
-      fHexFields[x, y].Width := coSizeFull;
-      fHexFields[x, y].Height := coSizeFull;
+      fHexFields[x, y].Width := _SizeFull;
+      fHexFields[x, y].Height := _SizeFull;
       fHexFields[x, y].Position.X := px;
       fHexFields[x, y].Position.Y := py;
       fHexFields[x, y].HitTest := True;
@@ -121,7 +143,7 @@ begin
   inherited;
   // Source: https://stackoverflow.com/questions/34417564/how-do-i-create-a-cut-out-hexagon-shape
   //Data.Data := 'M2.5,0.66 L7.5,0.66 L10,5 L7.5,9.33 L2.5,9.33 L0,5 z';
-  Data.Data := 'M2.5,0 L7.5,0 L10,5 L7.5,10 L2.5,10 L0,5 z';
+  Data.Data := 'M10,10 M0,0 M2.5,0 L7.5,0 L10,5 L7.5,10 L2.5,10 L0,5 z';
 
   Stroke.Color := claBlack;
   StrokeThickness := 2;
@@ -138,6 +160,11 @@ begin
   fTxt.TextSettings.Font.Style := fTxt.TextSettings.Font.Style + [tfontstyle.fsBold];
   fTxt.TextSettings.FontColor := claBlack;
   fTxt.Parent := Self;
+
+  fDebug := TRectangle.Create(Self);
+  fDebug.Align := TAlignLayout.Left;
+  fDebug.Fill.Color := $DD00FF00;
+  fDebug.Parent := Self;
 end;
 
 procedure THexField.SetHexFieldStatus(const Value: THexFieldStatus);
@@ -184,6 +211,13 @@ begin
 
     Repaint;
   end;
+end;
+
+procedure THexField.Resize;
+begin
+  inherited;
+  fDebug.Width := Width / 4 * 3;
+  fDebug.Height := Height / 4 * 3;
 end;
 
 end.

@@ -2,8 +2,8 @@ object frmStart: TfrmStart
   Left = 0
   Top = 0
   Caption = 'Proximity'
-  ClientHeight = 982
-  ClientWidth = 1129
+  ClientHeight = 1040
+  ClientWidth = 1126
   FormFactor.Width = 320
   FormFactor.Height = 480
   FormFactor.Devices = [Desktop, iPhone, iPad]
@@ -16,13 +16,13 @@ object frmStart: TfrmStart
   DesignerOrientation = 0
   DesignerOSVersion = ''
   object panTop: TPanel
-    Align = Top
+    Align = MostTop
     Height = 40.000000000000000000
     Padding.Left = 2.000000000000000000
     Padding.Top = 2.000000000000000000
     Padding.Right = 2.000000000000000000
     Padding.Bottom = 2.000000000000000000
-    Width = 1129.000000000000000000
+    Width = 1126.000000000000000000
     TabOrder = 1
     object btnNewGame: TButton
       Align = Left
@@ -34,11 +34,43 @@ object frmStart: TfrmStart
       Width = 80.000000000000000000
       OnClick = btnNewGameClick
     end
+    object NumberBox1: TNumberBox
+      Touch.InteractiveGestures = [LongTap, DoubleTap]
+      Align = Left
+      TabOrder = 4
+      Cursor = crIBeam
+      Min = 1.000000000000000000
+      Max = 20.000000000000000000
+      Value = 1.000000000000000000
+      Position.X = 84.000000000000000000
+      Position.Y = 2.000000000000000000
+      Width = 100.000000000000000000
+      Height = 36.000000000000000000
+      VertIncrement = 5.000000000000000000
+      Margins.Left = 2.000000000000000000
+      OnChangeTracking = NumberBox1ChangeTracking
+    end
+    object NumberBoxDebug: TNumberBox
+      Touch.InteractiveGestures = [LongTap, DoubleTap]
+      Align = Left
+      TabOrder = 3
+      Cursor = crIBeam
+      Min = 1.000000000000000000
+      Max = 600.000000000000000000
+      Value = 500.000000000000000000
+      Position.X = 186.000000000000000000
+      Position.Y = 2.000000000000000000
+      Width = 100.000000000000000000
+      Height = 36.000000000000000000
+      VertIncrement = 5.000000000000000000
+      Margins.Left = 2.000000000000000000
+      OnChangeTracking = NumberBoxDebugChangeTracking
+    end
   end
-  object panGame: TPanel
+  object designerLayout: TPanel
     Align = Client
-    Height = 942.000000000000000000
-    Width = 1129.000000000000000000
+    Height = 1000.000000000000000000
+    Width = 1126.000000000000000000
     TabOrder = 2
     object Path1: TPath
       Data.Path = {
@@ -53,7 +85,7 @@ object frmStart: TfrmStart
         end
         item
           Color = xFFFBD7D7
-          Offset = 0.953416168689727700
+          Offset = 0.953416168689727800
         end>
       Fill.Gradient.StartPosition.Y = 0.733153820037841800
       Fill.Gradient.StopPosition.X = 1.000000000000000000
@@ -147,6 +179,19 @@ object frmStart: TfrmStart
       Position.Y = 199.000000000000000000
       Stroke.Thickness = 2.000000000000000000
       Width = 200.000000000000000000
+    end
+  end
+  object panClient: TPanel
+    Align = Client
+    Height = 1000.000000000000000000
+    Width = 1126.000000000000000000
+    TabOrder = 4
+    object slGame: TScaledLayout
+      Align = Fit
+      Height = 1000.000000000000000000
+      OriginalWidth = 1000.000000000000000000
+      OriginalHeight = 1000.000000000000000000
+      Width = 1000.000000000000000000
     end
   end
 end

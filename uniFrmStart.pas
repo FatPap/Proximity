@@ -5,21 +5,27 @@ interface
 uses
   System.SysUtils, System.Types, System.UITypes, System.Classes,
   FMX.Types, FMX.Graphics, FMX.Controls, FMX.Forms, FMX.Dialogs, FMX.StdCtrls,
-  uniProximity, FMX.Objects;
+  uniProximity, FMX.Objects, FMX.Layouts, FMX.Edit;
 
 type
   TfrmStart = class(TForm)
     panTop: TPanel;
     btnNewGame: TButton;
-    panGame: TPanel;
+    designerLayout: TPanel;
     Path1: TPath;
     Path2: TPath;
     Path3: TPath;
     Path4: TPath;
     Path5: TPath;
+    slGame: TScaledLayout;
+    panClient: TPanel;
+    NumberBox1: TNumberBox;
+    NumberBoxDebug: TNumberBox;
     procedure btnNewGameClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
+    procedure NumberBox1ChangeTracking(Sender: TObject);
+    procedure NumberBoxDebugChangeTracking(Sender: TObject);
   private
     fProximity: TProximity;
   public
@@ -49,13 +55,22 @@ begin
   //
 end;
 
+procedure TfrmStart.NumberBox1ChangeTracking(Sender: TObject);
+begin
+  btnNewGameClick(nil);
+end;
+
+procedure TfrmStart.NumberBoxDebugChangeTracking(Sender: TObject);
+begin
+  btnNewGameClick(nil);
+end;
+
 procedure TfrmStart.btnNewGameClick(Sender: TObject);
 begin
   if Assigned(fProximity) then
     FreeAndNil(fProximity);
 
-  fProximity := TProximity.Create(frmStart);
-  fProximity.Parent := panGame;
+  fProximity := TProximity.Create(frmStart, slGame, Trunc(NumberBox1.Value), 4, Trunc(NumberBoxDebug.Value));
 end;
 
 
