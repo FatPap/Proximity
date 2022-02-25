@@ -3,7 +3,11 @@ unit uniProximity;
 interface
 
 uses
-  System.SysUtils, System.Types, System.UITypes, System.Classes,
+  System.SysUtils,
+  System.Types,
+  System.UITypes,
+  System.Classes,
+  System.Generics.Collections,
   FMX.Objects,
   FMX.Types,
   FMX.Layouts,
@@ -14,6 +18,7 @@ uses
 type
   THexField = class;
 
+  THexFieldList = TList<THexField>;
   THexFields = array of array of THexField;
 
   TPLayer = (Human, Computer);
@@ -24,6 +29,7 @@ type
     fNext: THexField;
     fCurrent: TPLayer;
     procedure HexFieldClick(Sender: TObject);
+    function GetNeighbours(aHexField: THexField): THexFieldList;
   public
     constructor Create(AOwner: TComponent; aParent: TScaledLayout; aRectBottom: TRectangle; aX, aY, aDebug: Integer); reintroduce;
     destructor Destroy; override;
@@ -32,19 +38,25 @@ type
   THexFieldStatus = ( none,
                       empty,
                       red,
-                      blue  );
+                      blue,
+                      debug  );
 
   THexField = class(TCustomPath)
   private
     fTxt: TText;
-//    fDebug: TRectangle;
+    fPoints: Integer;//    fDebug: TRectangle;
     fHexFieldStatus: THexFieldStatus;
+    fX, fY: Integer;
     procedure SetHexFieldStatus(const Value: THexFieldStatus);
+    procedure AddPoint;
+    procedure SetPoints(const Value: Integer);
   protected
     procedure Resize; override;
   public
     constructor Create(AOwner: TComponent); override;
     property HexFieldStatus: THexFieldStatus read fHexFieldStatus write SetHexFieldStatus;
+    property Points: Integer read fPoints write SetPoints;
+    procedure RandomPoints;
   end;
 
 implementation
@@ -53,6 +65,7 @@ uses
   System.UIConsts,
   System.Math,
   FMX.Graphics;
+
 
 
 { TProximity }
@@ -116,13 +129,14 @@ begin
         py := y * (h/2 - coStrokeThickness);
       end else
       begin
-      //px := x * (coSizeFull + coSizeHalf - coStrokeThickness) + (coSize34 - coStrokeThickness);
         px := x * (w + w2) + (w/4*3 - coStrokeThickness) - (2 * x * coStrokeThickness);
         py := y * (h/2 - coStrokeThickness);
       end;
 
       fHexFields[x, y] := THexField.Create(Self);
-      fHexFields[x, y].fTxt.Text := x.ToString + ',' + y.ToString;
+      fHexFields[x, y].fX := x;
+      fHexFields[x, y].fY := y;
+//      fHexFields[x, y].fTxt.Text := x.ToString + ',' + y.ToString;
       fHexFields[x, y].Width := w;
       fHexFields[x, y].Height := h;
       fHexFields[x, y].Position.X := px;
@@ -136,13 +150,10 @@ begin
 
   //
   fNext := THexField.Create(aRectBottom);
-  fNext.fTxt.Text := '19';
+  fNext.RandomPoints;
   fNext.Height := aRectBottom.Height - 10;
-  fNext.Width  := fNext.Height / Sqrt(3) * 2;
-//  fNext.Position.X := ;
-//  fNext.Position.Y := ;
-  fNext.HitTest := False;
-  //fNext.OnClick := HexFieldClick;
+  fNext.Width  := fNext.Height / Sqrt(3) * 2;//  fNext.Position.X := ;//  fNext.Position.Y := ;
+  fNext.HitTest := False;  //fNext.OnClick := HexFieldClick;
   fNext.Align := TAlignLayout.Center;
   fNext.Parent := aRectBottom;
   fNext.HexFieldStatus := THexFieldStatus.red;
@@ -158,34 +169,100 @@ end;
 
 procedure TProximity.HexFieldClick(Sender: TObject);
 var
-  hf: THexField;
+  clicked, hf: THexField;
+  _neighbours: TList<THexField>;
 begin
-  hf := THexField(Sender);
+  clicked := THexField(Sender);
 
-  case hf.HexFieldStatus of
+  case clicked.HexFieldStatus of
     empty:
     begin
       case fCurrent of
         Human   : begin
-                    hf.HexFieldStatus := THexFieldStatus.red;
+                    clicked.HexFieldStatus := THexFieldStatus.red;
                     fCurrent := TPLayer.Computer;
                     fNext.HexFieldStatus := THexFieldStatus.blue;
                   end;
         Computer: begin
-                    hf.HexFieldStatus := THexFieldStatus.blue;
+                    clicked.HexFieldStatus := THexFieldStatus.blue;
                     fCurrent := TPLayer.Human;
                     fNext.HexFieldStatus := THexFieldStatus.red;
                   end;
       end;
 
-      hf.fTxt.Text := fNext.fTxt.Text;
-      fNext.fTxt.Text := (Random(20)+1).ToString;
+      clicked.Points := fNext.Points;
+      fNext.RandomPoints;
+
+      // Nachbarn ermitteln:
+      _neighbours := GetNeighbours(clicked);
+      for hf in _neighbours do
+      begin
+        // eigene bekommen einen Punkt mehr:
+        if hf.HexFieldStatus = clicked.HexFieldStatus then
+          hf.AddPoint;
+        // gegnerische bekommen eigene Farbe:
+        case hf.HexFieldStatus of
+          red, blue:
+          begin
+            if hf.HexFieldStatus <> clicked.HexFieldStatus then
+              if hf.Points < clicked.Points then
+                hf.HexFieldStatus := clicked.HexFieldStatus;
+          end;
+        end;
+      end;
+      _neighbours.Free;
     end;
 
-    red  : ;
-    blue : ;
+    red  : ; // kann man nicht mehr klicken
+    blue : ; // kann man nicht mehr klicken
   end;
 end;
+
+function TProximity.GetNeighbours(aHexField: THexField): THexFieldList;
+var
+  hx, hy: Integer;
+
+  function IsInsideField(aX, aY: Integer): Boolean;
+  begin
+    Result :=
+      (aX >= 0)  and
+      (aX <= hx) and
+      (aY >= 0)  and
+      (aY <= hy);
+  end;
+
+  procedure AddIfInside(aX, aY: Integer);
+  begin
+    if IsInsideField(aX, aY) then
+      Result.Add( fHexFields[aX, aY] );
+  end;
+
+begin
+  Result := THexFieldList.Create;
+
+  hx := High(fHexFields);
+  hy := High(fHexFields[High(fHexFields)]);
+
+  if (aHexField.fY mod 2) = 0 then
+  begin
+    AddIfInside(aHexField.fX-1, aHexField.fY-1);
+    AddIfInside(aHexField.fX-1, aHexField.fY+1);
+    AddIfInside(aHexField.fX+0, aHexField.fY-2);
+    AddIfInside(aHexField.fX+0, aHexField.fY-1);
+    AddIfInside(aHexField.fX+0, aHexField.fY+1);
+    AddIfInside(aHexField.fX+0, aHexField.fY+2);
+  end else
+  begin
+    AddIfInside(aHexField.fX+0, aHexField.fY-2);
+    AddIfInside(aHexField.fX+0, aHexField.fY-1);
+    AddIfInside(aHexField.fX+0, aHexField.fY+1);
+    AddIfInside(aHexField.fX+0, aHexField.fY+2);
+    AddIfInside(aHexField.fX+1, aHexField.fY-1);
+    AddIfInside(aHexField.fX+1, aHexField.fY+1);
+  end;
+end;
+
+
 
 
 { THexField }
@@ -214,6 +291,7 @@ begin
   fTxt.TextSettings.WordWrap := False;
   fTxt.Parent := Self;
 
+  fPoints := 0;
 //  fDebug := TRectangle.Create(Self);
 //  fDebug.Align := TAlignLayout.Left;
 //  fDebug.Fill.Color := $DD00FF00;
@@ -230,6 +308,7 @@ begin
       none:;
       empty:  begin
                 Fill.Gradient.Style := TGradientStyle.Radial;
+
                 Fill.Gradient.Points[0].Color := $FF37615C;
                 Fill.Gradient.Points[0].Offset := 0;
                 Fill.Gradient.Points[1].Color := $FF508E86;
@@ -260,9 +339,33 @@ begin
                 Fill.Gradient.Points[1].Color := $FFDCDCFC;
                 Fill.Gradient.Points[1].Offset := 0.953416168689727700;
               end;
+      debug : begin
+                Fill.Gradient.Style := TGradientStyle.Linear;
+
+                Fill.Gradient.StartPosition.Y := 0.733153820037841800;
+                Fill.Gradient.StopPosition.X  := 1.000000000000000000;
+                Fill.Gradient.StopPosition.Y  := 0.266846150159835800;
+
+                Fill.Gradient.Points[0].Color := $FFA302A9;
+                Fill.Gradient.Points[0].Offset := 0.801242232322692900;
+                Fill.Gradient.Points[1].Color := $FFD00CFC;
+                Fill.Gradient.Points[1].Offset := 0.953416168689727700;
+              end;
     end;
 
     Repaint;
+  end;
+end;
+
+procedure THexField.SetPoints(const Value: Integer);
+var
+  tmp: Integer;
+begin
+  tmp := EnsureRange(Value, 1, 20);
+  if fPoints <> tmp then
+  begin
+    fPoints := tmp;
+    fTxt.Text := fPoints.ToString;
   end;
 end;
 
@@ -272,5 +375,16 @@ begin
 //  fDebug.Width := Width / 4 * 3;
 //  fDebug.Height := Height / 4 * 3;
 end;
+
+procedure THexField.AddPoint;
+begin
+  Points := Points + 1;
+end;
+
+procedure THexField.RandomPoints;
+begin
+  Points := Random(20)+1;
+end;
+
 
 end.
