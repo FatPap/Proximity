@@ -62,7 +62,7 @@ object frmStart: TfrmStart
       Cursor = crIBeam
       Min = 1.000000000000000000
       Max = 30.000000000000000000
-      Value = 2.000000000000000000
+      Value = 6.000000000000000000
       TextSettings.Font.Size = 14.000000000000000000
       TextSettings.Font.Style = [fsBold]
       TextSettings.HorzAlign = Center
@@ -84,7 +84,7 @@ object frmStart: TfrmStart
       Cursor = crIBeam
       Min = 2.000000000000000000
       Max = 30.000000000000000000
-      Value = 5.000000000000000000
+      Value = 20.000000000000000000
       TextSettings.Font.Size = 14.000000000000000000
       TextSettings.Font.Style = [fsBold]
       TextSettings.HorzAlign = Center
@@ -98,6 +98,18 @@ object frmStart: TfrmStart
       Margins.Bottom = 10.000000000000000000
       StyledSettings = [Family, FontColor]
       OnChangeTracking = nmbxXYChangeTrackings
+    end
+    object chkbxDebug: TCheckBox
+      Align = Right
+      Height = 37.000000000000000000
+      Margins.Top = 10.000000000000000000
+      Margins.Right = 10.000000000000000000
+      Margins.Bottom = 10.000000000000000000
+      Position.X = 988.000000000000000000
+      Position.Y = 10.000000000000000000
+      TabOrder = 5
+      Text = 'DEBUG'
+      Width = 72.000000000000000000
     end
   end
   object rectBottom: TRectangle
@@ -126,7 +138,7 @@ object frmStart: TfrmStart
     Fill.Color = xFFCCCC99
     Height = 863.000000000000000000
     Stroke.Kind = None
-    Width = 1070.000000000000000000
+    Width = 950.000000000000000000
     object slGame: TScaledLayout
       Align = Fit
       Height = 863.000000000000000000

@@ -1,5 +1,9 @@
 program Proximity;
 
+
+
+{$R *.dres}
+
 uses
   madExcept,
   madLinkDisAsm,
@@ -8,7 +12,8 @@ uses
   madListModules,
   FMX.Forms,
   uniFrmStart in 'uniFrmStart.pas' {frmStart},
-  uniProximity in 'uniProximity.pas';
+  uniProximity in 'uniProximity.pas',
+  bass in 'bass.pas';
 
 {$R *.res}
 
